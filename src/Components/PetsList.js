@@ -1,8 +1,37 @@
+import { useState } from "react";
 import pets from "../petsData";
 import PetItem from "./PetItem";
 
 function PetsList() {
-  const petList = pets.map((pet) => <PetItem pet={pet} key={pet.id} />);
+  //const petList = pets.map((pet) => <PetItem pet={pet} key={pet.id} />);
+  const [query, setQuery] = useState();
+  const [type, setType] = useState();
+
+  const searchAPet = (event) => {
+    setQuery(event.target.value.toLowerCase());
+  };
+
+  const searchASpecies = (event) => {
+    setType(event.target.value);
+  };
+
+  const displayedPetList = pets
+    .filter((pet) => {
+      if (query === "" || query === undefined) {
+        if (type === "" || type === undefined) {
+          return pet;
+        } else if (pet.type.includes(type)) {
+          return pet;
+        }
+      } else if (pet.name.toLowerCase().includes(query)) {
+        if (type === "" || type === undefined) {
+          return pet;
+        } else if (pet.type.includes(type)) {
+          return pet;
+        }
+      }
+    })
+    .map((pet) => <PetItem pet={pet} key={pet.id} />);
 
   return (
     <section id="doctors" className="doctor-section pt-140">
@@ -15,6 +44,7 @@ function PetsList() {
               </h1>
               <div className="input-group rounded">
                 <input
+                  onChange={searchAPet}
                   type="search"
                   className="form-control rounded"
                   placeholder="Search"
@@ -24,7 +54,7 @@ function PetsList() {
               </div>
               <br />
               Type:
-              <select className="form-select">
+              <select className="form-select" onChange={searchASpecies}>
                 <option value="" selected>
                   All
                 </option>
@@ -36,7 +66,7 @@ function PetsList() {
           </div>
         </div>
 
-        <div className="row justify-content-center">{petList}</div>
+        <div className="row justify-content-center">{displayedPetList}</div>
       </div>
     </section>
   );
