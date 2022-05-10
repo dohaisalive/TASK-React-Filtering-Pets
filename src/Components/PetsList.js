@@ -3,9 +3,13 @@ import pets from "../petsData";
 import PetItem from "./PetItem";
 
 function PetsList() {
-  //const petList = pets.map((pet) => <PetItem pet={pet} key={pet.id} />);
+  const [petList, setPetList] = useState(pets);
   const [query, setQuery] = useState();
   const [type, setType] = useState();
+
+  const handleAdopt = (petID) => {
+    setPetList(petList.filter((pet) => petID !== pet.id));
+  };
 
   const searchAPet = (event) => {
     setQuery(event.target.value.toLowerCase());
@@ -15,7 +19,7 @@ function PetsList() {
     setType(event.target.value);
   };
 
-  const displayedPetList = pets
+  const displayedPetList = petList
     .filter((pet) => {
       if (query === "" || query === undefined) {
         if (type === "" || type === undefined) {
@@ -31,7 +35,7 @@ function PetsList() {
         }
       }
     })
-    .map((pet) => <PetItem pet={pet} key={pet.id} />);
+    .map((pet) => <PetItem pet={pet} key={pet.id} handleAdopt={handleAdopt} />);
 
   return (
     <section id="doctors" className="doctor-section pt-140">

@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-function PetItem({ pet }) {
+function PetItem({ pet, handleAdopt }) {
   const [petImage, setImage] = useState(pet.image);
   const changeImg = () => setImage(pet.image2);
   return (
@@ -12,7 +12,11 @@ function PetItem({ pet }) {
           <button onClick={changeImg} type="button" className="btn btn-info">
             Pet
           </button>
-          <button type="button" class="btn btn-info  m-2">
+          <button
+            onClick={() => handleAdopt(pet.id)}
+            type="button"
+            class="btn btn-info  m-2"
+          >
             Adopt
           </button>
         </div>
